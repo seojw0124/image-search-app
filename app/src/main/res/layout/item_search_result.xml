@@ -38,7 +38,7 @@
         android:id="@+id/tv_latest_article_publish_date"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="4dp"
         android:textColor="@color/gray_300"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"

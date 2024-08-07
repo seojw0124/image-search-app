@@ -42,7 +42,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:paddingHorizontal="11dp"
-        android:paddingTop="10dp"
+        android:paddingVertical="10dp"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

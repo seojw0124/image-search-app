@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.jeongu.imagesearchapp.R
 import com.jeongu.imagesearchapp.databinding.FragmentSearchBinding
 
 class SearchFragment : Fragment() {

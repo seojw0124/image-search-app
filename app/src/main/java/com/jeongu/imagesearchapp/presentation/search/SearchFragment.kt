@@ -36,24 +36,22 @@ class SearchFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        searchViewModel.fetchSearchResult("android", 1)
+        searchViewModel.fetchSearchResult("android")
         initView()
+        initViewModel()
     }
 
     private fun initView() = with(binding) {
         rvSearchResultList.adapter = searchListAdapter
-        val list = mutableListOf<ImageInfo>()
-        for (i in 0 until 10) {
-            list.add(
-                ImageInfo(
-                    id = "$i",
-                    thumbnailUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRF1IwK6-SxM83UpFVY6WtUZxXx-phss_gAUfdKbkTfau6VWVkt",
-                    siteName = "site $i",
-                    dateTime = "date $i"
-                )
-            )
+        if (etInputSearch.text.toString().isNotBlank()) {
+            searchViewModel.fetchSearchResult(etInputSearch.text.toString())
         }
-        searchListAdapter.submitList(list.toList())
+    }
+
+    private fun initViewModel() = with(searchViewModel) {
+        searchResult.observe(viewLifecycleOwner) {
+            searchListAdapter.submitList(it)
+        }
     }
 
     override fun onDestroyView() {

@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.jeongu.imagesearchapp.data.repository.SearchResultRepositoryImpl
 import com.jeongu.imagesearchapp.domain.SearchResultRepository
 import com.jeongu.imagesearchapp.presentation.ImageInfo
+import com.jeongu.imagesearchapp.presentation.toImageInfo
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.io.IOException
@@ -20,12 +21,12 @@ class SearchViewModel(
     private val _searchResult = MutableLiveData<List<ImageInfo>>()
     val searchResult: LiveData<List<ImageInfo>> = _searchResult
 
-    fun fetchSearchResult(query: String, page: Int) {
+    fun fetchSearchResult(query: String, page: Int = 1) {
         viewModelScope.launch {
             runCatching {
                 val response = repository.searchImages(query, page)
-                val result = response.documents
-                Log.d(TAG, "fetchSearchResult: $result")
+                val result = response.documents?.toImageInfo() ?: emptyList()
+                _searchResult.value = result.sortedByDescending { it.dateTime }
             }.onFailure {
                 Log.e(TAG, "fetchSearchResult() onFailure: ${it.message}")
                 handleException(it)

@@ -3,6 +3,7 @@ package com.jeongu.imagesearchapp.data.remote
 import com.jeongu.imagesearchapp.data.model.ImageResponse
 import com.jeongu.imagesearchapp.data.model.VideoResponse
 import retrofit2.http.GET
+import retrofit2.http.Headers
 import retrofit2.http.Query
 
 interface KakaoApi {

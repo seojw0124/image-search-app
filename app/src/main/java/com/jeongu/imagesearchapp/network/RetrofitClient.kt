@@ -9,12 +9,12 @@ import java.util.concurrent.TimeUnit
 
 object RetrofitClient {
     private const val BASE_URL = "https://dapi.kakao.com/"
-    val kakaoAPI: KakaoApi by lazy { createRetrofit().create(KakaoApi::class.java) }
+    val kakaoAPI: KakaoApi by lazy { retrofit.create(KakaoApi::class.java) }
 
-    private fun createRetrofit(): Retrofit {
-        return Retrofit.Builder()
+    private val retrofit by lazy {
+        Retrofit.Builder()
             .baseUrl(BASE_URL)
-            .client(client)
+            .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
@@ -23,7 +23,13 @@ object RetrofitClient {
         level = HttpLoggingInterceptor.Level.BODY
     }
 
-    private val client = OkHttpClient.Builder()
-        .addInterceptor(loggingInterceptor)
-        .build()
+    private val okHttpClient by lazy {
+        val interceptor = HttpLoggingInterceptor()
+        interceptor.level = HttpLoggingInterceptor.Level.BODY
+        OkHttpClient.Builder()
+            .addInterceptor(AuthorizationInterceptor())
+            .addNetworkInterceptor(interceptor)
+            .build()
+    }
+
 }

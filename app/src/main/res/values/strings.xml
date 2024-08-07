@@ -2,4 +2,8 @@
     <string name="app_name">ImageSearchApp</string>
     <string name="label_search_screen">검색</string>
     <string name="label_bookmark_screen">북마크</string>
+    <string name="hint_search">검색어를 입력해주세요</string>
+    <string name="btn_label_search">검색</string>
+    <string name="description_search_result_thumbnail_image">검색된 아이템의 썸네일 이미지</string>
+    <string name="description_add_bookmark">북마크 아이콘 이미지</string>
 </resources>

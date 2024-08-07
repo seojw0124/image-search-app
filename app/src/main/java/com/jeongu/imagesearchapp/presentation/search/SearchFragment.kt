@@ -1,9 +1,12 @@
 package com.jeongu.imagesearchapp.presentation.search
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -36,21 +39,35 @@ class SearchFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        searchViewModel.fetchSearchResult("android")
         initView()
-        initViewModel()
     }
 
     private fun initView() = with(binding) {
         rvSearchResultList.adapter = searchListAdapter
         if (etInputSearch.text.toString().isNotBlank()) {
-            searchViewModel.fetchSearchResult(etInputSearch.text.toString())
+            setSearchResult()
+        }
+        btnSearch.setOnClickListener {
+            setSearchResult()
+            hideKeyboard()
         }
     }
 
     private fun initViewModel() = with(searchViewModel) {
         searchResult.observe(viewLifecycleOwner) {
             searchListAdapter.submitList(it)
+        }
+    }
+    
+    private fun setSearchResult() {
+        searchViewModel.fetchSearchResult(binding.etInputSearch.text.toString())
+        initViewModel()
+    }
+
+    private fun hideKeyboard() {
+        if (activity != null && requireActivity().currentFocus != null) {
+            val inputManager: InputMethodManager = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            inputManager.hideSoftInputFromWindow(requireActivity().currentFocus?.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
         }
     }
 

@@ -10,6 +10,14 @@ interface KakaoApi {
         @Query("query") search: String,
         @Query("sort") sort: String = "recency",
         @Query("page") page: Int = 1,
-        @Query("size") size: Int = 20
+        @Query("size") size: Int = 15
+    ): ImageResponse
+
+    @GET("v2/search/vclip")
+    suspend fun getVideoList(
+        @Query("query") search: String,
+        @Query("sort") sort: String = "recency",
+        @Query("page") page: Int = 1,
+        @Query("size") size: Int = 15
     ): ImageResponse
 }

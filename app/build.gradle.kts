@@ -79,6 +79,9 @@ dependencies {
     implementation ("com.google.dagger:hilt-android:2.52")
     kapt ("com.google.dagger:hilt-compiler:2.52")
 
+    // Paging3
+    implementation ("androidx.paging:paging-runtime:3.3.2")
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

@@ -10,9 +10,11 @@ import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import com.jeongu.imagesearchapp.R
 import com.jeongu.imagesearchapp.databinding.FragmentSearchBinding
+import com.jeongu.imagesearchapp.presentation.SearchPagingListAdapter
 import com.jeongu.imagesearchapp.presentation.model.SearchResultInfo
 import com.jeongu.imagesearchapp.presentation.bookmark.BookmarkViewModel
 import com.jeongu.imagesearchapp.presentation.common.SearchResultAdapter
@@ -21,6 +23,8 @@ import com.jeongu.imagesearchapp.presentation.copy
 import com.jeongu.imagesearchapp.presentation.id
 import com.jeongu.imagesearchapp.presentation.isBookmarked
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class SearchFragment : Fragment() {
@@ -44,6 +48,18 @@ class SearchFragment : Fragment() {
     }
     private lateinit var searchResultList: MutableList<SearchResultInfo>
 
+    private val searchResultViewModel by viewModels<SearchResultViewModel>()
+    private val searchResultAdapter by lazy {
+        SearchPagingListAdapter { item ->
+            if (item.isBookmarked) {
+                bookmarkViewModel.removeBookmarkItem(item)
+            } else {
+                val bookmarkItem = item.copy(isBookmarked = true)
+                bookmarkViewModel.addBookmarkItem(bookmarkItem)
+            }
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // TODO 나중에 저장된 검색어 가져오면 초기화해야함.
@@ -66,7 +82,7 @@ class SearchFragment : Fragment() {
     }
 
     private fun initView() = with(binding) {
-        rvSearchResultList.adapter = searchListAdapter
+        rvSearchResultList.adapter = searchResultAdapter
         if (etInputSearch.text.toString().isNotBlank()) {
             setSearchResult()
         }
@@ -77,14 +93,31 @@ class SearchFragment : Fragment() {
     }
     
     private fun setSearchResult() {
-        searchViewModel.fetchSearchResult(binding.etInputSearch.text.toString())
+        searchResultViewModel.fetchSearchResult(binding.etInputSearch.text.toString())
         initViewModel()
     }
 
-    private fun initViewModel() = with(searchViewModel) {
-        searchResult.observe(viewLifecycleOwner) {
-            searchResultList.clear()
-            searchResultList.addAll(it)
+    private fun initViewModel() = with(searchResultViewModel) {
+
+            searchResult.observe(viewLifecycleOwner) { searchResult ->
+                searchResult?.let {
+                    bookmarkViewModel.bookmarks.observe(viewLifecycleOwner) { bookmarks ->
+                        searchResultList.forEachIndexed { index, searchResultInfo ->
+                            if (bookmarks.toMutableList().containsById(searchResultInfo.id)) {
+                                searchResultList[index] = searchResultInfo.copy(isBookmarked = true)
+                            } else {
+                                searchResultList[index] = searchResultInfo.copy(isBookmarked = false)
+                            }
+                        }
+                        searchListAdapter.submitList(searchResultList.toList())
+                    }
+                }
+            }
+
+        searchResult.collectLatest {
+            if (it != null) {
+                searchResultAdapter.submitData(lifecycle, it)
+            }
             bookmarkViewModel.bookmarks.observe(viewLifecycleOwner) { bookmarks ->
                 searchResultList.forEachIndexed { index, searchResultInfo ->
                     if (bookmarks.toMutableList().containsById(searchResultInfo.id)) {
@@ -95,8 +128,8 @@ class SearchFragment : Fragment() {
                 }
                 searchListAdapter.submitList(searchResultList.toList())
             }
-            //searchListAdapter.submitList(searchResultList.toList())
-        }
+            searchListAdapter.submitList(searchResultList.toList())
+//        }
 //        bookmarkViewModel.bookmarks.observe(viewLifecycleOwner) { bookmarks ->
 //            searchResultList.forEachIndexed { index, searchResultInfo ->
 //                if (bookmarks.toMutableList().containsById(searchResultInfo.id)) {

@@ -76,8 +76,8 @@ dependencies {
     implementation(libs.androidx.viewpager2)
 
     // Dagger Hilt
-    implementation("com.google.dagger:hilt-android:2.52")
-    kapt("com.google.dagger:hilt-android-compiler:2.52")
+    implementation ("com.google.dagger:hilt-android:2.52")
+    kapt ("com.google.dagger:hilt-compiler:2.52")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

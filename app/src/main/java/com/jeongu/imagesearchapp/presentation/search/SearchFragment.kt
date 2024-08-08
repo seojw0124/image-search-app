@@ -86,19 +86,30 @@ class SearchFragment : Fragment() {
 
     private fun initViewModel() = with(searchViewModel) {
         searchResult.observe(viewLifecycleOwner) {
+            searchResultList.clear()
             searchResultList.addAll(it)
-            searchListAdapter.submitList(searchResultList.toList())
-        }
-        bookmarkViewModel.bookmarks.observe(viewLifecycleOwner) { bookmarks ->
-            searchResultList.forEachIndexed { index, searchResultInfo ->
-                if (bookmarks.toMutableList().containsById(searchResultInfo.id)) {
-                    searchResultList[index] = searchResultInfo.copy(isBookmarked = true)
-                } else {
-                    searchResultList[index] = searchResultInfo.copy(isBookmarked = false)
+            bookmarkViewModel.bookmarks.observe(viewLifecycleOwner) { bookmarks ->
+                searchResultList.forEachIndexed { index, searchResultInfo ->
+                    if (bookmarks.toMutableList().containsById(searchResultInfo.id)) {
+                        searchResultList[index] = searchResultInfo.copy(isBookmarked = true)
+                    } else {
+                        searchResultList[index] = searchResultInfo.copy(isBookmarked = false)
+                    }
                 }
+                searchListAdapter.submitList(searchResultList.toList())
             }
-            searchListAdapter.submitList(searchResultList.toList())
+            //searchListAdapter.submitList(searchResultList.toList())
         }
+//        bookmarkViewModel.bookmarks.observe(viewLifecycleOwner) { bookmarks ->
+//            searchResultList.forEachIndexed { index, searchResultInfo ->
+//                if (bookmarks.toMutableList().containsById(searchResultInfo.id)) {
+//                    searchResultList[index] = searchResultInfo.copy(isBookmarked = true)
+//                } else {
+//                    searchResultList[index] = searchResultInfo.copy(isBookmarked = false)
+//                }
+//            }
+//            searchListAdapter.submitList(searchResultList.toList())
+//        }
     }
 
     private fun initScrollToTopButton() {

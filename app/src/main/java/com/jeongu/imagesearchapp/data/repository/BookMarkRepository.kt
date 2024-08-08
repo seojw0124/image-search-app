@@ -3,17 +3,18 @@ package com.jeongu.imagesearchapp.data.repository
 import android.content.Context
 import android.content.SharedPreferences
 import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 import com.jeongu.imagesearchapp.presentation.SearchResultInfo
 import com.jeongu.imagesearchapp.presentation.containsById
 import com.jeongu.imagesearchapp.presentation.id
-import com.jeongu.imagesearchapp.util.Constants.BOOKMARKS
+import com.jeongu.imagesearchapp.util.Constants.PREF_BOOKMARKS
 
 class BookMarkRepository(context: Context) {
+    private val gson = GsonBuilder().registerTypeAdapter(SearchResultInfo::class.java, CustomDeserializer()).create()
     private val sharedPreferences: SharedPreferences =
-        context.getSharedPreferences(BOOKMARKS, Context.MODE_PRIVATE)
-    private val gson = Gson()
-    private val _bookmarkItems = mutableListOf<SearchResultInfo>()
+        context.getSharedPreferences(PREF_BOOKMARKS, Context.MODE_PRIVATE)
+    private val _bookmarkItems = loadBookmarks()
     val bookmarkItems: List<SearchResultInfo>
         get() = _bookmarkItems.toList()
 
@@ -31,11 +32,11 @@ class BookMarkRepository(context: Context) {
 
     private fun saveBookmarks() {
         val json = gson.toJson(_bookmarkItems)
-        sharedPreferences.edit().putString(BOOKMARKS, json).apply()
+        sharedPreferences.edit().putString(PREF_BOOKMARKS, json).apply()
     }
 
     private fun loadBookmarks(): MutableList<SearchResultInfo> {
-        val json = sharedPreferences.getString(BOOKMARKS, null) ?: return mutableListOf()
+        val json = sharedPreferences.getString(PREF_BOOKMARKS, null) ?: return mutableListOf()
         val type = object : TypeToken<MutableList<SearchResultInfo>>() {}.type
         return gson.fromJson(json, type)
     }

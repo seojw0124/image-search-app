@@ -10,15 +10,15 @@ import com.jeongu.imagesearchapp.databinding.FragmentBookmarkBinding
 import com.jeongu.imagesearchapp.presentation.common.SearchResultAdapter
 import com.jeongu.imagesearchapp.presentation.copy
 import com.jeongu.imagesearchapp.presentation.isBookmarked
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class BookmarkFragment : Fragment() {
 
     private var _binding: FragmentBookmarkBinding? = null
     private val binding get() = _binding!!
 
-    private val bookmarkViewModel by activityViewModels<BookmarkViewModel> {
-        BookmarkViewModelFactory(requireContext())
-    }
+    private val bookmarkViewModel by activityViewModels<BookmarkViewModel>()
     private val bookmarkListAdapter by lazy {
         SearchResultAdapter { item ->
             //Toast.makeText(requireContext(), item.isBookmarked.toString(), Toast.LENGTH_SHORT).show()

@@ -10,13 +10,16 @@ import com.jeongu.imagesearchapp.presentation.SearchResultInfo
 import com.jeongu.imagesearchapp.presentation.sortedByDescendingDatetime
 import com.jeongu.imagesearchapp.presentation.toImageInfo
 import com.jeongu.imagesearchapp.presentation.toVideoInfo
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.io.IOException
+import javax.inject.Inject
 
 private const val TAG = "SearchViewModel"
 
-class SearchViewModel(
+@HiltViewModel
+class SearchViewModel @Inject constructor(
     private val repository: SearchResultRepositoryImpl
 ) : ViewModel() {
     private val _searchResult = MutableLiveData<List<SearchResultInfo>>()

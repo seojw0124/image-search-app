@@ -12,7 +12,9 @@ import com.jeongu.imagesearchapp.R
 import com.jeongu.imagesearchapp.databinding.ActivityHomeBinding
 import com.jeongu.imagesearchapp.presentation.bookmark.BookmarkFragment
 import com.jeongu.imagesearchapp.presentation.search.SearchFragment
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class HomeActivity : AppCompatActivity() {
 
     private val binding: ActivityHomeBinding by lazy {

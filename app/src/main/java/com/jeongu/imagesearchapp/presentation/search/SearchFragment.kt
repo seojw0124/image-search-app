@@ -21,18 +21,16 @@ import com.jeongu.imagesearchapp.presentation.containsById
 import com.jeongu.imagesearchapp.presentation.copy
 import com.jeongu.imagesearchapp.presentation.id
 import com.jeongu.imagesearchapp.presentation.isBookmarked
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SearchFragment : Fragment() {
 
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
 
-    private val searchViewModel by viewModels<SearchViewModel> {
-        SearchViewModelFactory()
-    }
-    private val bookmarkViewModel by activityViewModels<BookmarkViewModel> {
-        BookmarkViewModelFactory(requireContext())
-    }
+    private val searchViewModel by viewModels<SearchViewModel>()
+    private val bookmarkViewModel by activityViewModels<BookmarkViewModel>()
     private val searchListAdapter by lazy {
         SearchResultAdapter { item ->
 //            Toast.makeText(requireContext(), item.isBookmarked.toString(), Toast.LENGTH_SHORT).show()

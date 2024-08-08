@@ -5,8 +5,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.jeongu.imagesearchapp.data.repository.BookmarkRepositoryImpl
 import com.jeongu.imagesearchapp.presentation.SearchResultInfo
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class BookmarkViewModel(private val repository: BookmarkRepositoryImpl) : ViewModel() {
+@HiltViewModel
+class BookmarkViewModel @Inject constructor(private val repository: BookmarkRepositoryImpl) : ViewModel() {
     private val _bookmarks: MutableLiveData<List<SearchResultInfo>> = MutableLiveData()
     val bookmarks: LiveData<List<SearchResultInfo>> get() = _bookmarks
 

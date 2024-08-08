@@ -35,11 +35,18 @@ val SearchResultInfo.isBookmarked: Boolean
         is SearchResultInfo.VideoInfo -> isBookMarked
     }
 
-fun List<SearchResultInfo>.sortedByDatetime(): List<SearchResultInfo> {
+fun List<SearchResultInfo>.sortedByDescendingDatetime(): List<SearchResultInfo> {
     return sortedByDescending {
         when (it) {
             is SearchResultInfo.ImageInfo -> it.dateTime
             is SearchResultInfo.VideoInfo -> it.dateTime
         }
+    }
+}
+
+fun SearchResultInfo.copy(isBookmarked: Boolean): SearchResultInfo {
+    return when (this) {
+        is SearchResultInfo.ImageInfo -> this.copy(isBookMarked = isBookmarked)
+        is SearchResultInfo.VideoInfo -> this.copy(isBookMarked = isBookmarked)
     }
 }

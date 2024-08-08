@@ -6,18 +6,26 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import com.jeongu.imagesearchapp.databinding.FragmentBookmarkBinding
 import com.jeongu.imagesearchapp.presentation.SearchResultInfo
 import com.jeongu.imagesearchapp.presentation.common.SearchResultAdapter
+import com.jeongu.imagesearchapp.presentation.copy
 import com.jeongu.imagesearchapp.presentation.isBookmarked
 
 class BookmarkFragment : Fragment() {
 
     private var _binding: FragmentBookmarkBinding? = null
     private val binding get() = _binding!!
+
+    private val bookmarkViewModel by activityViewModels<BookmarkViewModel> {
+        BookmarkViewModelFactory(requireContext())
+    }
     private val bookmarkListAdapter by lazy {
         SearchResultAdapter { item ->
-            Toast.makeText(requireContext(), item.isBookmarked.toString(), Toast.LENGTH_SHORT).show()
+            //Toast.makeText(requireContext(), item.isBookmarked.toString(), Toast.LENGTH_SHORT).show()
+            val bookmarkItem = item.copy(isBookmarked = !item.isBookmarked)
+            bookmarkViewModel.removeBookmarkItem(item)
         }
     }
 
@@ -33,23 +41,17 @@ class BookmarkFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initView()
+        initViewModel()
     }
 
     private fun initView() = with(binding) {
         rvSearchResultList.adapter = bookmarkListAdapter
-        val list = mutableListOf<SearchResultInfo>()
-        for (i in 0 until 10) {
-            list.add(
-                SearchResultInfo.ImageInfo(
-                    id = "$i",
-                    thumbnailUrl = "https://health.chosun.com/site/data/img_dir/2023/07/17/2023071701753_0.jpg",
-                    siteName = "site $i",
-                    docUrl = "docUrl $i",
-                    dateTime = "date $i"
-                )
-            )
+    }
+
+    private fun initViewModel() = with(bookmarkViewModel) {
+        bookmarkList.observe(viewLifecycleOwner) {
+            bookmarkListAdapter.submitList(it)
         }
-        bookmarkListAdapter.submitList(list.toList())
     }
 
     override fun onDestroyView() {

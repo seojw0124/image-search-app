@@ -8,9 +8,13 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import com.jeongu.imagesearchapp.databinding.FragmentSearchBinding
+import com.jeongu.imagesearchapp.presentation.bookmark.BookmarkViewModel
+import com.jeongu.imagesearchapp.presentation.bookmark.BookmarkViewModelFactory
 import com.jeongu.imagesearchapp.presentation.common.SearchResultAdapter
+import com.jeongu.imagesearchapp.presentation.copy
 import com.jeongu.imagesearchapp.presentation.isBookmarked
 
 class SearchFragment : Fragment() {
@@ -18,13 +22,23 @@ class SearchFragment : Fragment() {
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
 
-    private val searchListAdapter by lazy {
-        SearchResultAdapter { item ->
-            Toast.makeText(requireContext(), item.isBookmarked.toString(), Toast.LENGTH_SHORT).show()
-        }
-    }
     private val searchViewModel by viewModels<SearchViewModel> {
         SearchViewModelFactory()
+    }
+    private val bookmarkViewModel by activityViewModels<BookmarkViewModel> {
+        BookmarkViewModelFactory(requireContext())
+    }
+    private val searchListAdapter by lazy {
+        SearchResultAdapter { item ->
+//            Toast.makeText(requireContext(), item.isBookmarked.toString(), Toast.LENGTH_SHORT).show()
+            if (item.isBookmarked) {
+                val bookmarkItem = item.copy(isBookmarked = !item.isBookmarked)
+                bookmarkViewModel.removeBookmarkItem(bookmarkItem)
+            } else {
+                val bookmarkItem = item.copy(isBookmarked = !item.isBookmarked)
+                bookmarkViewModel.addBookmarkItem(bookmarkItem)
+            }
+        }
     }
 
     override fun onCreateView(

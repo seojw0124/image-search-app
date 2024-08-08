@@ -6,4 +6,6 @@
     <string name="btn_label_search">검색</string>
     <string name="description_search_result_thumbnail_image">검색된 아이템의 썸네일 이미지</string>
     <string name="description_add_bookmark">북마크 아이콘 이미지</string>
+    <string name="format_image_result">[Image] %s</string>
+    <string name="format_video_result">[Video] %s</string>
 </resources>

@@ -6,15 +6,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import com.jeongu.imagesearchapp.databinding.FragmentSearchBinding
+import com.jeongu.imagesearchapp.presentation.SearchResultInfo
 import com.jeongu.imagesearchapp.presentation.bookmark.BookmarkViewModel
 import com.jeongu.imagesearchapp.presentation.bookmark.BookmarkViewModelFactory
 import com.jeongu.imagesearchapp.presentation.common.SearchResultAdapter
+import com.jeongu.imagesearchapp.presentation.containsById
 import com.jeongu.imagesearchapp.presentation.copy
+import com.jeongu.imagesearchapp.presentation.id
 import com.jeongu.imagesearchapp.presentation.isBookmarked
 
 class SearchFragment : Fragment() {
@@ -32,13 +34,20 @@ class SearchFragment : Fragment() {
         SearchResultAdapter { item ->
 //            Toast.makeText(requireContext(), item.isBookmarked.toString(), Toast.LENGTH_SHORT).show()
             if (item.isBookmarked) {
-                val bookmarkItem = item.copy(isBookmarked = !item.isBookmarked)
-                bookmarkViewModel.removeBookmarkItem(bookmarkItem)
+                //val bookmarkItem = item.copy(isBookmarked = false)
+                bookmarkViewModel.removeBookmarkItem(item)
             } else {
-                val bookmarkItem = item.copy(isBookmarked = !item.isBookmarked)
+                val bookmarkItem = item.copy(isBookmarked = true)
                 bookmarkViewModel.addBookmarkItem(bookmarkItem)
             }
         }
+    }
+    private lateinit var searchResultList: MutableList<SearchResultInfo>
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        // TODO 나중에 저장된 검색어 가져오면 초기화해야함.
+        searchResultList = mutableListOf()
     }
 
     override fun onCreateView(
@@ -73,7 +82,18 @@ class SearchFragment : Fragment() {
 
     private fun initViewModel() = with(searchViewModel) {
         searchResult.observe(viewLifecycleOwner) {
-            searchListAdapter.submitList(it)
+            searchResultList.addAll(it)
+            searchListAdapter.submitList(searchResultList.toList())
+        }
+        bookmarkViewModel.bookmarks.observe(viewLifecycleOwner) { bookmarks ->
+            searchResultList.forEachIndexed { index, searchResultInfo ->
+                if (bookmarks.toMutableList().containsById(searchResultInfo.id)) {
+                    searchResultList[index] = searchResultInfo.copy(isBookmarked = true)
+                } else {
+                    searchResultList[index] = searchResultInfo.copy(isBookmarked = false)
+                }
+            }
+            searchListAdapter.submitList(searchResultList.toList())
         }
     }
 

@@ -53,7 +53,7 @@
         android:layout_height="28dp"
         android:layout_margin="4dp"
         android:contentDescription="@string/description_add_bookmark"
-        android:src="@drawable/ic_bookmark_border"
+        android:src="@drawable/ic_bookmark"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

@@ -7,15 +7,15 @@ import com.jeongu.imagesearchapp.data.repository.BookMarkRepository
 import com.jeongu.imagesearchapp.presentation.SearchResultInfo
 
 class BookmarkViewModel(private val repository: BookMarkRepository) : ViewModel() {
-    private val _bookmarkList: MutableLiveData<List<SearchResultInfo>> = MutableLiveData()
-    val bookmarkList: LiveData<List<SearchResultInfo>> get() = _bookmarkList
+    private val _bookmarks: MutableLiveData<List<SearchResultInfo>> = MutableLiveData()
+    val bookmarks: LiveData<List<SearchResultInfo>> get() = _bookmarks
 
     init {
         loadBookMarks()
     }
 
     private fun loadBookMarks() {
-        _bookmarkList.value = repository.bookmarkItems
+        _bookmarks.value = repository.bookmarkItems
     }
 
     fun addBookmarkItem(item: SearchResultInfo) {

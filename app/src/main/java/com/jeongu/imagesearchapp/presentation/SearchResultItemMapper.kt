@@ -8,7 +8,7 @@ import com.jeongu.imagesearchapp.util.Constants.SEARCH_TYPE_VIDEO
 fun List<ImageDocument>.toImageInfo(): List<SearchResultInfo> {
     return this.map {
         SearchResultInfo.ImageInfo(
-            id = it.docUrl ?: "",
+            id = it.imageUrl ?: "",
             type = SEARCH_TYPE_IMAGE,
             thumbnailUrl = it.thumbnailUrl ?: "",
             siteName = it.displaySitename ?: "",
@@ -63,10 +63,28 @@ val SearchResultInfo.id: String
     }
 
 fun MutableList<SearchResultInfo>.containsById(id: String): Boolean {
-    return any {
+    // 리스트에 id가 있는지 확인
+    val isContains = any {
         when (it) {
             is SearchResultInfo.ImageInfo -> it.id == id
             is SearchResultInfo.VideoInfo -> it.id == id
         }
     }
+//    this.forEach { item ->
+//        return when (item) {
+//            is SearchResultInfo.ImageInfo -> item.id == id
+//            is SearchResultInfo.VideoInfo -> item.id == id
+//            else -> false
+//        }
+//    }
+    return isContains
 }
+
+//fun List<SearchResultInfo>.containsById(id: String): Boolean {
+//    return any {
+//        when (it) {
+//            is SearchResultInfo.ImageInfo -> it.id == id
+//            is SearchResultInfo.VideoInfo -> it.id == id
+//        }
+//    }
+//}

@@ -2,6 +2,7 @@ package com.jeongu.imagesearchapp.presentation.common
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -56,11 +57,13 @@ class SearchResultAdapter(
         fun bind(item: SearchResultInfo.ImageInfo) {
             with(binding) {
                 itemView.setOnClickListener {
+                    ivImageResultBookmark.isVisible = !ivImageResultBookmark.isVisible
                     onClick(item)
                 }
                 ivImageResultThumbnail.load(item.thumbnailUrl)
                 tvImageResultTitle.setTitle(VIEW_TYPE_IMAGE ,item.siteName)
                 tvImageResultDate.text = item.dateTime
+                ivImageResultBookmark.isVisible = item.isBookmarked
             }
         }
 
@@ -85,11 +88,13 @@ class SearchResultAdapter(
         fun bind(item: SearchResultInfo.VideoInfo) {
             with(binding) {
                 itemView.setOnClickListener {
+                    ivVideoResultBookmark.isVisible = !ivVideoResultBookmark.isVisible
                     onClick(item)
                 }
                 ivVideoResultThumbnail.load(item.thumbnail)
                 tvVideoResultTitle.setTitle(VIEW_TYPE_VIDEO, item.title)
                 tvVideoResultDate.text = item.dateTime
+                ivVideoResultBookmark.isVisible = item.isBookmarked
             }
         }
 

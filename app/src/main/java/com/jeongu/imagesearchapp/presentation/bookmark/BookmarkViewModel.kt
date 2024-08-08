@@ -4,9 +4,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.jeongu.imagesearchapp.data.repository.BookMarkRepository
+import com.jeongu.imagesearchapp.data.repository.BookmarkRepositoryImpl
 import com.jeongu.imagesearchapp.presentation.SearchResultInfo
 
-class BookmarkViewModel(private val repository: BookMarkRepository) : ViewModel() {
+class BookmarkViewModel(private val repository: BookmarkRepositoryImpl) : ViewModel() {
     private val _bookmarks: MutableLiveData<List<SearchResultInfo>> = MutableLiveData()
     val bookmarks: LiveData<List<SearchResultInfo>> get() = _bookmarks
 

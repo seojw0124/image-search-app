@@ -7,7 +7,7 @@ import java.util.UUID
 fun List<ImageDocument>.toImageInfo(): List<SearchResultInfo> {
     return this.map {
         SearchResultInfo.ImageInfo(
-            id = UUID.randomUUID().toString(),
+            id = it.docUrl ?: "",
             thumbnailUrl = it.thumbnailUrl ?: "",
             siteName = it.displaySitename ?: "",
             docUrl = it.docUrl ?: "",
@@ -19,7 +19,7 @@ fun List<ImageDocument>.toImageInfo(): List<SearchResultInfo> {
 fun List<VideoDocument>.toVideoInfo(): List<SearchResultInfo> {
     return this.map {
         SearchResultInfo.VideoInfo(
-            id = UUID.randomUUID().toString(),
+            id = it.url ?: "",
             thumbnail = it.thumbnail ?: "",
             title = it.title ?: "",
             url = it.url ?: "",
@@ -48,5 +48,22 @@ fun SearchResultInfo.copy(isBookmarked: Boolean): SearchResultInfo {
     return when (this) {
         is SearchResultInfo.ImageInfo -> this.copy(isBookMarked = isBookmarked)
         is SearchResultInfo.VideoInfo -> this.copy(isBookMarked = isBookmarked)
+    }
+}
+
+val SearchResultInfo.id: String
+    get() {
+        return when (this) {
+            is SearchResultInfo.ImageInfo -> id
+            is SearchResultInfo.VideoInfo -> id
+        }
+    }
+
+fun MutableList<SearchResultInfo>.containsById(id: String): Boolean {
+    return any {
+        when (it) {
+            is SearchResultInfo.ImageInfo -> it.id == id
+            is SearchResultInfo.VideoInfo -> it.id == id
+        }
     }
 }

@@ -5,6 +5,8 @@ import android.content.SharedPreferences
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.jeongu.imagesearchapp.presentation.SearchResultInfo
+import com.jeongu.imagesearchapp.presentation.containsById
+import com.jeongu.imagesearchapp.presentation.id
 import com.jeongu.imagesearchapp.util.Constants.BOOKMARKS
 
 class BookMarkRepository(context: Context) {
@@ -16,7 +18,7 @@ class BookMarkRepository(context: Context) {
         get() = _bookmarkItems.toList()
 
     fun addBookmarkItem(item: SearchResultInfo) {
-        if (!_bookmarkItems.contains(item)) {
+        if (!_bookmarkItems.containsById(item.id)) {
             _bookmarkItems.add(0, item)
             saveBookmarks()
         }

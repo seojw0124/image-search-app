@@ -11,6 +11,7 @@ import com.jeongu.imagesearchapp.databinding.ItemImageResultBinding
 import com.jeongu.imagesearchapp.databinding.ItemVideoResultBinding
 import com.jeongu.imagesearchapp.presentation.SearchResultInfo
 import com.jeongu.imagesearchapp.presentation.extensions.load
+import com.jeongu.imagesearchapp.presentation.extensions.setDateTime
 import com.jeongu.imagesearchapp.presentation.extensions.setTitle
 
 private const val VIEW_TYPE_IMAGE = 0
@@ -62,7 +63,7 @@ class SearchResultAdapter(
                 }
                 ivImageResultThumbnail.load(item.thumbnailUrl)
                 tvImageResultTitle.setTitle(VIEW_TYPE_IMAGE ,item.siteName)
-                tvImageResultDate.text = item.dateTime
+                tvImageResultDate.setDateTime(item.dateTime)
                 ivImageResultBookmark.isVisible = item.isBookmarked
             }
         }
@@ -93,7 +94,7 @@ class SearchResultAdapter(
                 }
                 ivVideoResultThumbnail.load(item.thumbnail)
                 tvVideoResultTitle.setTitle(VIEW_TYPE_VIDEO, item.title)
-                tvVideoResultDate.text = item.dateTime
+                tvVideoResultDate.setDateTime(item.dateTime)
                 ivVideoResultBookmark.isVisible = item.isBookmarked
             }
         }

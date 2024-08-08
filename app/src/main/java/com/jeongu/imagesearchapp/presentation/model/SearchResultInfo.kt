@@ -1,4 +1,4 @@
-package com.jeongu.imagesearchapp.presentation
+package com.jeongu.imagesearchapp.presentation.model
 
 sealed class SearchResultInfo {
     data class ImageInfo(

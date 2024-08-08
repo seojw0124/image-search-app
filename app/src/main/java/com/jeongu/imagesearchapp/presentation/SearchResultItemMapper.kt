@@ -2,6 +2,7 @@ package com.jeongu.imagesearchapp.presentation
 
 import com.jeongu.imagesearchapp.data.model.ImageDocument
 import com.jeongu.imagesearchapp.data.model.VideoDocument
+import com.jeongu.imagesearchapp.presentation.model.SearchResultInfo
 import com.jeongu.imagesearchapp.util.Constants.SEARCH_TYPE_IMAGE
 import com.jeongu.imagesearchapp.util.Constants.SEARCH_TYPE_VIDEO
 

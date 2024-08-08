@@ -3,7 +3,7 @@ package com.jeongu.imagesearchapp.data.repository
 import com.google.gson.JsonDeserializationContext
 import com.google.gson.JsonDeserializer
 import com.google.gson.JsonElement
-import com.jeongu.imagesearchapp.presentation.SearchResultInfo
+import com.jeongu.imagesearchapp.presentation.model.SearchResultInfo
 import com.jeongu.imagesearchapp.util.Constants.SEARCH_TYPE_IMAGE
 import java.lang.reflect.Type
 

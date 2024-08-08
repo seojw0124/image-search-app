@@ -6,10 +6,9 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.jeongu.imagesearchapp.databinding.ItemImageResultBinding
 import com.jeongu.imagesearchapp.databinding.ItemVideoResultBinding
-import com.jeongu.imagesearchapp.presentation.SearchResultInfo
+import com.jeongu.imagesearchapp.presentation.model.SearchResultInfo
 import com.jeongu.imagesearchapp.presentation.extensions.load
 import com.jeongu.imagesearchapp.presentation.extensions.setDateTime
 import com.jeongu.imagesearchapp.presentation.extensions.setTitle
@@ -117,8 +116,8 @@ class SearchResultAdapter(
 private class SearchResultDiffCallback : DiffUtil.ItemCallback<SearchResultInfo>() {
     override fun areItemsTheSame(oldItem: SearchResultInfo, newItem: SearchResultInfo): Boolean {
         return when {
-            oldItem is SearchResultInfo.ImageInfo && newItem is SearchResultInfo.ImageInfo -> oldItem.docUrl == newItem.docUrl
-            oldItem is SearchResultInfo.VideoInfo && newItem is SearchResultInfo.VideoInfo -> oldItem.url == newItem.url
+            oldItem is SearchResultInfo.ImageInfo && newItem is SearchResultInfo.ImageInfo -> oldItem.id == newItem.id
+            oldItem is SearchResultInfo.VideoInfo && newItem is SearchResultInfo.VideoInfo -> oldItem.id == newItem.id
             else -> false
         }
     }

@@ -5,7 +5,7 @@ import android.content.SharedPreferences
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 import com.jeongu.imagesearchapp.domain.BookmarkRepository
-import com.jeongu.imagesearchapp.presentation.SearchResultInfo
+import com.jeongu.imagesearchapp.presentation.model.SearchResultInfo
 import com.jeongu.imagesearchapp.presentation.containsById
 import com.jeongu.imagesearchapp.presentation.id
 import com.jeongu.imagesearchapp.util.Constants.PREF_BOOKMARKS

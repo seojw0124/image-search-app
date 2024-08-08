@@ -13,9 +13,8 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.jeongu.imagesearchapp.R
 import com.jeongu.imagesearchapp.databinding.FragmentSearchBinding
-import com.jeongu.imagesearchapp.presentation.SearchResultInfo
+import com.jeongu.imagesearchapp.presentation.model.SearchResultInfo
 import com.jeongu.imagesearchapp.presentation.bookmark.BookmarkViewModel
-import com.jeongu.imagesearchapp.presentation.bookmark.BookmarkViewModelFactory
 import com.jeongu.imagesearchapp.presentation.common.SearchResultAdapter
 import com.jeongu.imagesearchapp.presentation.containsById
 import com.jeongu.imagesearchapp.presentation.copy

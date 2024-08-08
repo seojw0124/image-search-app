@@ -1,6 +1,6 @@
 package com.jeongu.imagesearchapp.domain
 
-import com.jeongu.imagesearchapp.presentation.SearchResultInfo
+import com.jeongu.imagesearchapp.presentation.model.SearchResultInfo
 
 interface BookmarkRepository {
 

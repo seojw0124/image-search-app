@@ -3,7 +3,6 @@ package com.jeongu.imagesearchapp.presentation.bookmark
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.jeongu.imagesearchapp.data.repository.BookMarkRepository
 import com.jeongu.imagesearchapp.data.repository.BookmarkRepositoryImpl
 
 class BookmarkViewModelFactory(private val context: Context) : ViewModelProvider.Factory {

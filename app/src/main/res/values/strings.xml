@@ -8,4 +8,5 @@
     <string name="description_add_bookmark">북마크 아이콘 이미지</string>
     <string name="format_image_result">[Image] %s</string>
     <string name="format_video_result">[Video] %s</string>
+    <string name="description_scroll_to_top_icon">위로 스크롤하는 아이콘 이미지</string>
 </resources>

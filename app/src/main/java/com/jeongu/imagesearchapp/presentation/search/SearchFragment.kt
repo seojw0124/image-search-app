@@ -5,10 +5,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.RecyclerView
+import com.jeongu.imagesearchapp.R
 import com.jeongu.imagesearchapp.databinding.FragmentSearchBinding
 import com.jeongu.imagesearchapp.presentation.SearchResultInfo
 import com.jeongu.imagesearchapp.presentation.bookmark.BookmarkViewModel
@@ -62,6 +65,7 @@ class SearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initView()
+        initScrollToTopButton()
     }
 
     private fun initView() = with(binding) {
@@ -94,6 +98,39 @@ class SearchFragment : Fragment() {
                 }
             }
             searchListAdapter.submitList(searchResultList.toList())
+        }
+    }
+
+    private fun initScrollToTopButton() {
+        val fadeIn = AnimationUtils.loadAnimation(requireContext(), R.anim.fade_in_scroll_button)
+        val fadeOut = AnimationUtils.loadAnimation(requireContext(), R.anim.fade_out_scroll_button)
+        var isTop = true
+
+        with(binding) {
+            rvSearchResultList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                    super.onScrollStateChanged(recyclerView, newState)
+                    if (!rvSearchResultList.canScrollVertically(-1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
+                        ivScrollToTop.apply {
+                            visibility = View.GONE
+                            startAnimation(fadeOut)
+                        }
+                        isTop = true
+                    } else {
+                        if (isTop) {
+                            ivScrollToTop.apply {
+                                visibility = View.VISIBLE
+                                ivScrollToTop.startAnimation(fadeIn)
+                            }
+                            isTop = false
+                        }
+                    }
+                }
+            })
+
+            ivScrollToTop.setOnClickListener {
+                binding.rvSearchResultList.smoothScrollToPosition(0)
+            }
         }
     }
 

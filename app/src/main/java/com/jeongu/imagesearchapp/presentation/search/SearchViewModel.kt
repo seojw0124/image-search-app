@@ -7,8 +7,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jeongu.imagesearchapp.data.repository.SearchResultRepositoryImpl
 import com.jeongu.imagesearchapp.domain.SearchResultRepository
-import com.jeongu.imagesearchapp.presentation.ImageInfo
+import com.jeongu.imagesearchapp.presentation.SearchResultInfo
+import com.jeongu.imagesearchapp.presentation.sortedByDatetime
 import com.jeongu.imagesearchapp.presentation.toImageInfo
+import com.jeongu.imagesearchapp.presentation.toVideoInfo
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.io.IOException
@@ -18,15 +20,16 @@ private const val TAG = "SearchViewModel"
 class SearchViewModel(
     private val repository: SearchResultRepositoryImpl
 ) : ViewModel() {
-    private val _searchResult = MutableLiveData<List<ImageInfo>>()
-    val searchResult: LiveData<List<ImageInfo>> = _searchResult
+    private val _searchResult = MutableLiveData<List<SearchResultInfo>>()
+    val searchResult: LiveData<List<SearchResultInfo>> = _searchResult
 
     fun fetchSearchResult(query: String, page: Int = 1) {
         viewModelScope.launch {
             runCatching {
-                val response = repository.searchImages(query, page)
-                val result = response.documents?.toImageInfo() ?: emptyList()
-                _searchResult.value = result.sortedByDescending { it.dateTime }
+                val imageResult = repository.searchImages(query, page).documents?.toImageInfo() ?: emptyList()
+                val videoResult = repository.searchVideos(query, page).documents?.toVideoInfo() ?: emptyList()
+
+                _searchResult.value = (imageResult + videoResult).sortedByDatetime()
             }.onFailure {
                 Log.e(TAG, "fetchSearchResult() onFailure: ${it.message}")
                 handleException(it)

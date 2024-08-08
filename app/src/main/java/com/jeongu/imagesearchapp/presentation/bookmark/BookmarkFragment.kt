@@ -7,16 +7,17 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.jeongu.imagesearchapp.databinding.FragmentBookmarkBinding
-import com.jeongu.imagesearchapp.presentation.ImageInfo
-import com.jeongu.imagesearchapp.presentation.common.ImageListAdapter
+import com.jeongu.imagesearchapp.presentation.SearchResultInfo
+import com.jeongu.imagesearchapp.presentation.common.SearchResultAdapter
+import com.jeongu.imagesearchapp.presentation.isBookmarked
 
 class BookmarkFragment : Fragment() {
 
     private var _binding: FragmentBookmarkBinding? = null
     private val binding get() = _binding!!
     private val bookmarkListAdapter by lazy {
-        ImageListAdapter { item ->
-            Toast.makeText(requireContext(), item.siteName, Toast.LENGTH_SHORT).show()
+        SearchResultAdapter { item ->
+            Toast.makeText(requireContext(), item.isBookmarked.toString(), Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -36,13 +37,14 @@ class BookmarkFragment : Fragment() {
 
     private fun initView() = with(binding) {
         rvSearchResultList.adapter = bookmarkListAdapter
-        val list = mutableListOf<ImageInfo>()
+        val list = mutableListOf<SearchResultInfo>()
         for (i in 0 until 10) {
             list.add(
-                ImageInfo(
+                SearchResultInfo.ImageInfo(
                     id = "$i",
                     thumbnailUrl = "https://health.chosun.com/site/data/img_dir/2023/07/17/2023071701753_0.jpg",
                     siteName = "site $i",
+                    docUrl = "docUrl $i",
                     dateTime = "date $i"
                 )
             )

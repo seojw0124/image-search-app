@@ -6,13 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.jeongu.imagesearchapp.databinding.FragmentSearchBinding
-import com.jeongu.imagesearchapp.presentation.ImageInfo
-import com.jeongu.imagesearchapp.presentation.common.ImageListAdapter
+import com.jeongu.imagesearchapp.presentation.common.SearchResultAdapter
+import com.jeongu.imagesearchapp.presentation.isBookmarked
 
 class SearchFragment : Fragment() {
 
@@ -20,8 +19,8 @@ class SearchFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val searchListAdapter by lazy {
-        ImageListAdapter { item ->
-            Toast.makeText(requireContext(), item.siteName, Toast.LENGTH_SHORT).show()
+        SearchResultAdapter { item ->
+            Toast.makeText(requireContext(), item.isBookmarked.toString(), Toast.LENGTH_SHORT).show()
         }
     }
     private val searchViewModel by viewModels<SearchViewModel> {
@@ -52,16 +51,16 @@ class SearchFragment : Fragment() {
             hideKeyboard()
         }
     }
+    
+    private fun setSearchResult() {
+        searchViewModel.fetchSearchResult(binding.etInputSearch.text.toString())
+        initViewModel()
+    }
 
     private fun initViewModel() = with(searchViewModel) {
         searchResult.observe(viewLifecycleOwner) {
             searchListAdapter.submitList(it)
         }
-    }
-    
-    private fun setSearchResult() {
-        searchViewModel.fetchSearchResult(binding.etInputSearch.text.toString())
-        initViewModel()
     }
 
     private fun hideKeyboard() {

@@ -7,9 +7,10 @@
     android:padding="5dp">
 
     <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/iv_search_result_thumbnail_image"
+        android:id="@+id/iv_image_result_thumbnail"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:adjustViewBounds="true"
         android:contentDescription="@string/description_search_result_thumbnail_image"
         android:scaleType="centerCrop"
         app:layout_constraintDimensionRatio="w, 1:1"
@@ -20,7 +21,7 @@
         tools:background="@color/gray_50" />
 
     <TextView
-        android:id="@+id/tv_latest_article_title"
+        android:id="@+id/tv_image_result_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -31,11 +32,11 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/iv_search_result_thumbnail_image"
+        app:layout_constraintTop_toBottomOf="@id/iv_image_result_thumbnail"
         tools:text="마나아라아ㅏ나마ㅏㄴ암;ㄴ아ㅣ러" />
 
     <TextView
-        android:id="@+id/tv_latest_article_publish_date"
+        android:id="@+id/tv_image_result_date"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
@@ -43,11 +44,11 @@
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_latest_article_title"
+        app:layout_constraintTop_toBottomOf="@id/tv_image_result_title"
         tools:text="2023/12/25" />
 
     <ImageView
-        android:id="@+id/iv_bookmark"
+        android:id="@+id/iv_image_result_bookmark"
         android:layout_width="28dp"
         android:layout_height="28dp"
         android:layout_margin="4dp"

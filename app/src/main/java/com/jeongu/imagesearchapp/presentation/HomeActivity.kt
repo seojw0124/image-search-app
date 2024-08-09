@@ -5,13 +5,9 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.commit
 import com.google.android.material.tabs.TabLayoutMediator
 import com.jeongu.imagesearchapp.R
 import com.jeongu.imagesearchapp.databinding.ActivityHomeBinding
-import com.jeongu.imagesearchapp.presentation.bookmark.BookmarkFragment
-import com.jeongu.imagesearchapp.presentation.search.SearchFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -43,33 +39,10 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun initView() = with(binding) {
-//        bottomNavigationHome.setOnItemSelectedListener {
-//            when (it.itemId) {
-//                R.id.navigation_search -> {
-//                    SearchFragment().loadFragment()
-//                    true
-//                }
-//                R.id.navigation_bookmark -> {
-//                    BookmarkFragment().loadFragment()
-//                    true
-//                }
-//                else -> {
-//                    false
-//                }
-//            }
-//        }
         viewpagerHome.adapter = HomePagerStateAdapter(this@HomeActivity)
         TabLayoutMediator(tabHome, viewpagerHome) { tab, position ->
             tab.text = menuTabTitles.keys.toList()[position]
             tab.setIcon(menuTabTitles.values.toList()[position])
         }.attach()
     }
-
-//    private fun Fragment.loadFragment() {
-//        supportFragmentManager.commit {
-//            replace(R.id.container_home, this@loadFragment)
-//            setReorderingAllowed(true)
-//            addToBackStack(null)
-//        }
-//    }
 }

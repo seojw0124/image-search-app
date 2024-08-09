@@ -6,13 +6,14 @@ import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 import com.jeongu.imagesearchapp.domain.BookmarkRepository
 import com.jeongu.imagesearchapp.presentation.model.SearchResultInfo
-import com.jeongu.imagesearchapp.presentation.containsById
-import com.jeongu.imagesearchapp.presentation.id
+import com.jeongu.imagesearchapp.presentation.extensions.containsById
+import com.jeongu.imagesearchapp.presentation.extensions.id
 import com.jeongu.imagesearchapp.util.Constants.PREF_BOOKMARKS
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 class BookmarkRepositoryImpl @Inject constructor(@ApplicationContext context: Context) : BookmarkRepository {
+
     private val gson = GsonBuilder().registerTypeAdapter(SearchResultInfo::class.java, CustomDeserializer()).create()
     private val sharedPreferences: SharedPreferences =
         context.getSharedPreferences(PREF_BOOKMARKS, Context.MODE_PRIVATE)

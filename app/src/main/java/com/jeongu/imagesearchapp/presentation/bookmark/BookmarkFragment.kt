@@ -8,8 +8,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.jeongu.imagesearchapp.databinding.FragmentBookmarkBinding
 import com.jeongu.imagesearchapp.presentation.common.SearchResultAdapter
-import com.jeongu.imagesearchapp.presentation.copy
-import com.jeongu.imagesearchapp.presentation.isBookmarked
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -21,8 +19,6 @@ class BookmarkFragment : Fragment() {
     private val bookmarkViewModel by activityViewModels<BookmarkViewModel>()
     private val bookmarkListAdapter by lazy {
         SearchResultAdapter { item ->
-            //Toast.makeText(requireContext(), item.isBookmarked.toString(), Toast.LENGTH_SHORT).show()
-            val bookmarkItem = item.copy(isBookmarked = !item.isBookmarked)
             bookmarkViewModel.removeBookmarkItem(item)
         }
     }

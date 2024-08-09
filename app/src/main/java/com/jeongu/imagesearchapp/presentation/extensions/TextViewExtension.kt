@@ -1,8 +1,6 @@
 package com.jeongu.imagesearchapp.presentation.extensions
 
-import android.os.Build
 import android.widget.TextView
-import androidx.annotation.RequiresApi
 import com.jeongu.imagesearchapp.R
 import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter

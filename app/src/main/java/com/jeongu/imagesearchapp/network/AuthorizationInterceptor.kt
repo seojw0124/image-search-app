@@ -2,7 +2,6 @@ package com.jeongu.imagesearchapp.network
 
 import com.jeongu.imagesearchapp.BuildConfig
 import okhttp3.Interceptor
-import okhttp3.Response
 
 class AuthorizationInterceptor : Interceptor {
 

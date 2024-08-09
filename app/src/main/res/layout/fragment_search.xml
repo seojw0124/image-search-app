@@ -30,7 +30,7 @@
         android:layout_height="48dp"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="16dp"
-        android:background="@drawable/background_blue500"
+        android:background="@drawable/background_button"
         android:text="@string/btn_label_search"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -49,6 +49,21 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/et_input_search"
         app:spanCount="2"
-        tools:listitem="@layout/item_search_result" />
+        tools:listitem="@layout/item_image_result" />
+
+    <ImageView
+        android:id="@+id/iv_scroll_to_top"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/selector_bg_floating_action_button"
+        android:contentDescription="@string/description_scroll_to_top_icon"
+        android:padding="10dp"
+        android:src="@drawable/selector_floating_image"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

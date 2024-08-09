@@ -7,41 +7,35 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jeongu.imagesearchapp.data.repository.SearchResultRepositoryImpl
 import com.jeongu.imagesearchapp.domain.SearchResultRepository
-import com.jeongu.imagesearchapp.presentation.ImageInfo
+import com.jeongu.imagesearchapp.presentation.model.SearchResultInfo
+import com.jeongu.imagesearchapp.presentation.sortedByDescendingDatetime
+import com.jeongu.imagesearchapp.presentation.toImageInfo
+import com.jeongu.imagesearchapp.presentation.toVideoInfo
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.io.IOException
+import javax.inject.Inject
 
 private const val TAG = "SearchViewModel"
 
-class SearchViewModel(
-    private val repository: SearchResultRepositoryImpl
+@HiltViewModel
+class SearchViewModel @Inject constructor(
+    private val repository: SearchResultRepository
 ) : ViewModel() {
-    private val _searchResult = MutableLiveData<List<ImageInfo>>()
-    val searchResult: LiveData<List<ImageInfo>> = _searchResult
+    private val _searchResult = MutableLiveData<List<SearchResultInfo>>()
+    val searchResult: LiveData<List<SearchResultInfo>> = _searchResult
 
-    fun fetchSearchResult(query: String, page: Int) {
+    fun fetchSearchResult(query: String, page: Int = 1) {
         viewModelScope.launch {
             runCatching {
-                val response = repository.searchImages(query, page)
-                val result = response.documents
-                Log.d(TAG, "fetchSearchResult: $result")
+                val imageResult = repository.searchImages(query, page).documents?.toImageInfo() ?: emptyList()
+                val videoResult = repository.searchVideos(query, page).documents?.toVideoInfo() ?: emptyList()
+
+                _searchResult.value = (imageResult + videoResult).sortedByDescendingDatetime()
             }.onFailure {
                 Log.e(TAG, "fetchSearchResult() onFailure: ${it.message}")
-                handleException(it)
             }
-        }
-    }
-
-    private fun handleException(e: Throwable) {
-        when (e) {
-            is HttpException -> {
-                val errorJsonString = e.response()?.errorBody()?.string()
-                Log.e(TAG, "HTTP error: $errorJsonString")
-            }
-
-            is IOException -> Log.e(TAG, "Network error: $e")
-            else -> Log.e(TAG, "Unexpected error: $e")
         }
     }
 }

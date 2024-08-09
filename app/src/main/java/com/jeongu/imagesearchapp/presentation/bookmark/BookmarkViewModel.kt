@@ -3,7 +3,6 @@ package com.jeongu.imagesearchapp.presentation.bookmark
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.jeongu.imagesearchapp.data.repository.BookmarkRepositoryImpl
 import com.jeongu.imagesearchapp.domain.BookmarkRepository
 import com.jeongu.imagesearchapp.presentation.model.SearchResultInfo
 import dagger.hilt.android.lifecycle.HiltViewModel

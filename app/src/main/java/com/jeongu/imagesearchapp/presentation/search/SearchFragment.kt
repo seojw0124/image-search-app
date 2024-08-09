@@ -33,9 +33,7 @@ class SearchFragment : Fragment() {
     private val bookmarkViewModel by activityViewModels<BookmarkViewModel>()
     private val searchListAdapter by lazy {
         SearchResultAdapter { item ->
-//            Toast.makeText(requireContext(), item.isBookmarked.toString(), Toast.LENGTH_SHORT).show()
             if (item.isBookmarked) {
-                //val bookmarkItem = item.copy(isBookmarked = false)
                 bookmarkViewModel.removeBookmarkItem(item)
             } else {
                 val bookmarkItem = item.copy(isBookmarked = true)
@@ -49,7 +47,6 @@ class SearchFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // TODO 나중에 저장된 검색어 가져오면 초기화해야함.
         val sharedPref = requireActivity().getSharedPreferences(PREF_SEARCH_HISTORY, Context.MODE_PRIVATE)
         searchHistoryList = sharedPref.getStringSet(PREF_SEARCH_HISTORY, mutableSetOf()) ?: mutableSetOf()
         searchText = searchHistoryList.lastOrNull() ?: ""
@@ -86,8 +83,8 @@ class SearchFragment : Fragment() {
     }
 
     private fun saveSearchHistory() {
-        val searchHistory = binding.etInputSearch.text.toString()
-        searchHistoryList.add(searchHistory)
+        val searchHistoryText = binding.etInputSearch.text.toString()
+        searchHistoryList.add(searchHistoryText)
         val sharedPref = requireActivity().getSharedPreferences(PREF_SEARCH_HISTORY, Context.MODE_PRIVATE)
         val editor = sharedPref.edit()
         editor.putStringSet(PREF_SEARCH_HISTORY, searchHistoryList)

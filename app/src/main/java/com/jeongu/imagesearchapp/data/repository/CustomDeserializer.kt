@@ -8,6 +8,7 @@ import com.jeongu.imagesearchapp.util.Constants.SEARCH_TYPE_IMAGE
 import java.lang.reflect.Type
 
 class CustomDeserializer : JsonDeserializer<SearchResultInfo> {
+
     override fun deserialize(
         json: JsonElement,
         typeOfT: Type?,

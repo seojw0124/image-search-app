@@ -64,28 +64,11 @@ val SearchResultInfo.id: String
     }
 
 fun MutableList<SearchResultInfo>.containsById(id: String): Boolean {
-    // 리스트에 id가 있는지 확인
     val isContains = any {
         when (it) {
             is SearchResultInfo.ImageInfo -> it.id == id
             is SearchResultInfo.VideoInfo -> it.id == id
         }
     }
-//    this.forEach { item ->
-//        return when (item) {
-//            is SearchResultInfo.ImageInfo -> item.id == id
-//            is SearchResultInfo.VideoInfo -> item.id == id
-//            else -> false
-//        }
-//    }
     return isContains
 }
-
-//fun List<SearchResultInfo>.containsById(id: String): Boolean {
-//    return any {
-//        when (it) {
-//            is SearchResultInfo.ImageInfo -> it.id == id
-//            is SearchResultInfo.VideoInfo -> it.id == id
-//        }
-//    }
-//}

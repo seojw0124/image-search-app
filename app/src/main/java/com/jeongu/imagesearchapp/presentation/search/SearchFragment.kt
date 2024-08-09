@@ -20,6 +20,7 @@ import com.jeongu.imagesearchapp.presentation.containsById
 import com.jeongu.imagesearchapp.presentation.copy
 import com.jeongu.imagesearchapp.presentation.id
 import com.jeongu.imagesearchapp.presentation.isBookmarked
+import com.jeongu.imagesearchapp.util.Constants.PREF_SEARCH_HISTORY
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -43,10 +44,16 @@ class SearchFragment : Fragment() {
         }
     }
     private lateinit var searchResultList: MutableList<SearchResultInfo>
+    private lateinit var searchHistoryList: MutableSet<String>
+    private lateinit var searchText: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // TODO 나중에 저장된 검색어 가져오면 초기화해야함.
+        val sharedPref = requireActivity().getSharedPreferences(PREF_SEARCH_HISTORY, Context.MODE_PRIVATE)
+        searchHistoryList = sharedPref.getStringSet(PREF_SEARCH_HISTORY, mutableSetOf()) ?: mutableSetOf()
+        searchText = searchHistoryList.lastOrNull() ?: ""
+
         searchResultList = mutableListOf()
     }
 
@@ -67,13 +74,24 @@ class SearchFragment : Fragment() {
 
     private fun initView() = with(binding) {
         rvSearchResultList.adapter = searchListAdapter
-        if (etInputSearch.text.toString().isNotBlank()) {
+        if (searchText.isNotBlank()) {
+            etInputSearch.setText(searchText)
             setSearchResult()
         }
         btnSearch.setOnClickListener {
+            saveSearchHistory()
             setSearchResult()
             hideKeyboard()
         }
+    }
+
+    private fun saveSearchHistory() {
+        val searchHistory = binding.etInputSearch.text.toString()
+        searchHistoryList.add(searchHistory)
+        val sharedPref = requireActivity().getSharedPreferences(PREF_SEARCH_HISTORY, Context.MODE_PRIVATE)
+        val editor = sharedPref.edit()
+        editor.putStringSet(PREF_SEARCH_HISTORY, searchHistoryList)
+        editor.apply()
     }
     
     private fun setSearchResult() {
@@ -95,18 +113,7 @@ class SearchFragment : Fragment() {
                 }
                 searchListAdapter.submitList(searchResultList.toList())
             }
-            //searchListAdapter.submitList(searchResultList.toList())
         }
-//        bookmarkViewModel.bookmarks.observe(viewLifecycleOwner) { bookmarks ->
-//            searchResultList.forEachIndexed { index, searchResultInfo ->
-//                if (bookmarks.toMutableList().containsById(searchResultInfo.id)) {
-//                    searchResultList[index] = searchResultInfo.copy(isBookmarked = true)
-//                } else {
-//                    searchResultList[index] = searchResultInfo.copy(isBookmarked = false)
-//                }
-//            }
-//            searchListAdapter.submitList(searchResultList.toList())
-//        }
     }
 
     private fun initScrollToTopButton() {

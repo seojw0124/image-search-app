@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.paging.PagingData
 import androidx.recyclerview.widget.RecyclerView
 import com.jeongu.imagesearchapp.R
 import com.jeongu.imagesearchapp.databinding.FragmentSearchBinding
@@ -98,48 +99,25 @@ class SearchFragment : Fragment() {
     }
 
     private fun initViewModel() = with(searchResultViewModel) {
-
-            searchResult.observe(viewLifecycleOwner) { searchResult ->
-                searchResult?.let {
-                    bookmarkViewModel.bookmarks.observe(viewLifecycleOwner) { bookmarks ->
-                        searchResultList.forEachIndexed { index, searchResultInfo ->
-                            if (bookmarks.toMutableList().containsById(searchResultInfo.id)) {
-                                searchResultList[index] = searchResultInfo.copy(isBookmarked = true)
-                            } else {
-                                searchResultList[index] = searchResultInfo.copy(isBookmarked = false)
-                            }
-                        }
-                        searchListAdapter.submitList(searchResultList.toList())
-                    }
+        lifecycleScope.launch {
+            searchResult.collectLatest { pagingData ->
+                pagingData?.let {
+                    searchResultAdapter.submitData(pagingData)
                 }
-            }
-
-        searchResult.collectLatest {
-            if (it != null) {
-                searchResultAdapter.submitData(lifecycle, it)
             }
             bookmarkViewModel.bookmarks.observe(viewLifecycleOwner) { bookmarks ->
-                searchResultList.forEachIndexed { index, searchResultInfo ->
+                val currentList = searchResultAdapter.snapshot().items
+                val updatedList = currentList.map { searchResultInfo ->
                     if (bookmarks.toMutableList().containsById(searchResultInfo.id)) {
-                        searchResultList[index] = searchResultInfo.copy(isBookmarked = true)
+                        searchResultInfo.copy(isBookmarked = true)
                     } else {
-                        searchResultList[index] = searchResultInfo.copy(isBookmarked = false)
+                        searchResultInfo.copy(isBookmarked = false)
                     }
                 }
-                searchListAdapter.submitList(searchResultList.toList())
+                searchResultAdapter.submitData(lifecycle, PagingData.from(updatedList))
             }
-            searchListAdapter.submitList(searchResultList.toList())
-//        }
-//        bookmarkViewModel.bookmarks.observe(viewLifecycleOwner) { bookmarks ->
-//            searchResultList.forEachIndexed { index, searchResultInfo ->
-//                if (bookmarks.toMutableList().containsById(searchResultInfo.id)) {
-//                    searchResultList[index] = searchResultInfo.copy(isBookmarked = true)
-//                } else {
-//                    searchResultList[index] = searchResultInfo.copy(isBookmarked = false)
-//                }
-//            }
-//            searchListAdapter.submitList(searchResultList.toList())
-//        }
+        }
+
     }
 
     private fun initScrollToTopButton() {

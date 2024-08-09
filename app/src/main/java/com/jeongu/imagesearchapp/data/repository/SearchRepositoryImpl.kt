@@ -18,5 +18,5 @@ class SearchRepositoryImpl @Inject constructor(private val kakaoApi: KakaoApi) :
         pagingSourceFactory = {
             SearchPagingSource(kakaoApi, query)
         }
-    ).liveData
+    ).flow
 }

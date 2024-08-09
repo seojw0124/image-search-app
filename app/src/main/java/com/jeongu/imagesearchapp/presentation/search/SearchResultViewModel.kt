@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
@@ -23,14 +24,18 @@ import javax.inject.Inject
 class SearchResultViewModel @Inject constructor(
     private val repository: SearchRepository
 ) : ViewModel() {
-    private val _searchResult = MutableLiveData<PagingData<SearchResultInfo>?>(null)
-    val searchResult: LiveData<PagingData<SearchResultInfo>?> = _searchResult
+    private val _searchResult = MutableStateFlow<PagingData<SearchResultInfo>?>(null)
+    val searchResult: StateFlow<PagingData<SearchResultInfo>?> = _searchResult
 
     fun fetchSearchResult(query: String, page: Int = 1) {
         viewModelScope.launch {
             runCatching {
-                repository.loadSearchResult(query).observeForever {
-                    _searchResult.postValue(it)
+//                repository.loadSearchResult(query).observeForever {
+//                    _searchResult.postValue(it)
+//                }
+
+                repository.loadSearchResult(query).cachedIn(viewModelScope).collectLatest {
+                    _searchResult.value = it
                 }
             }.onFailure {
                 Log.e("SearchResultViewModel", "fetchSearchResult() onFailure: ${it.message}")

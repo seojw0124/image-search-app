@@ -7,5 +7,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface SearchRepository {
 
-    fun loadSearchResult(query: String): LiveData<PagingData<SearchResultInfo>>
+    fun loadSearchResult(query: String): Flow<PagingData<SearchResultInfo>>
 }

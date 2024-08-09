@@ -16,10 +16,10 @@ import com.jeongu.imagesearchapp.databinding.FragmentSearchBinding
 import com.jeongu.imagesearchapp.presentation.model.SearchResultInfo
 import com.jeongu.imagesearchapp.presentation.bookmark.BookmarkViewModel
 import com.jeongu.imagesearchapp.presentation.common.SearchResultAdapter
-import com.jeongu.imagesearchapp.presentation.containsById
-import com.jeongu.imagesearchapp.presentation.copy
-import com.jeongu.imagesearchapp.presentation.id
-import com.jeongu.imagesearchapp.presentation.isBookmarked
+import com.jeongu.imagesearchapp.presentation.extensions.containsById
+import com.jeongu.imagesearchapp.presentation.extensions.copy
+import com.jeongu.imagesearchapp.presentation.extensions.id
+import com.jeongu.imagesearchapp.presentation.extensions.isBookmarked
 import com.jeongu.imagesearchapp.util.Constants.PREF_SEARCH_HISTORY
 import dagger.hilt.android.AndroidEntryPoint
 

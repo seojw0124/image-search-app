@@ -12,7 +12,7 @@ interface KakaoApi {
         @Query("query") query: String,
         @Query("sort") sort: String = "recency",
         @Query("page") page: Int = 1,
-        @Query("size") size: Int = 15
+        @Query("size") size: Int = 20
     ): ImageResponse
 
     @GET("v2/search/vclip")
@@ -20,6 +20,6 @@ interface KakaoApi {
         @Query("query") query: String,
         @Query("sort") sort: String = "recency",
         @Query("page") page: Int = 1,
-        @Query("size") size: Int = 15
+        @Query("size") size: Int = 10
     ): VideoResponse
 }

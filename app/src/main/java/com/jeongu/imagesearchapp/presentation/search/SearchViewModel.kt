@@ -6,10 +6,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jeongu.imagesearchapp.domain.SearchResultRepository
+import com.jeongu.imagesearchapp.presentation.extensions.sortedByDescendingDatetime
 import com.jeongu.imagesearchapp.presentation.model.SearchResultInfo
-import com.jeongu.imagesearchapp.presentation.sortedByDescendingDatetime
-import com.jeongu.imagesearchapp.presentation.toImageInfo
-import com.jeongu.imagesearchapp.presentation.toVideoInfo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
